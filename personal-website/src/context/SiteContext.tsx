@@ -31,7 +31,6 @@ export function SiteProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // 🔹 DB'den oku
   useEffect(() => {
     const fetchSiteData = async () => {
       try {

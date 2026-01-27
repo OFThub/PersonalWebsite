@@ -1,13 +1,20 @@
 import { NextResponse } from 'next/server';
 import { connectDB } from '@/lib/mongoDb';
 import SiteSettings from '@/models/SiteSettings';
+import { requireAdmin } from '@/lib/auth';
 
-// 🔹 GET: Site ayarlarını getir
+// GET site settings (public)
 export async function GET() {
   try {
     await connectDB();
-
     const settings = await SiteSettings.findOne();
+    
+    if (!settings) {
+      return NextResponse.json(
+        { message: 'Site ayarları bulunamadı' },
+        { status: 404 }
+      );
+    }
 
     return NextResponse.json(settings);
   } catch (error) {
@@ -18,15 +25,15 @@ export async function GET() {
   }
 }
 
-// 🔹 PUT: Site ayarlarını güncelle / oluştur
+// PUT update site settings (admin only)
 export async function PUT(req: Request) {
   try {
+    await requireAdmin();
     await connectDB();
+    
     const body = await req.json();
+    const { name, title, description, bio, email, phone, github, linkedin, avatar, resumeUrl } = body;
 
-    const { name, title, description, email, github, linkedin } = body;
-
-    // 🛑 Basic validation
     if (!name || !title || !description) {
       return NextResponse.json(
         { message: 'Zorunlu alanlar eksik' },
@@ -37,29 +44,41 @@ export async function PUT(req: Request) {
     let settings = await SiteSettings.findOne();
 
     if (!settings) {
-      // İlk kez oluştur
       settings = await SiteSettings.create({
         name,
         title,
         description,
+        bio,
         email,
+        phone,
         github,
-        linkedin
+        linkedin,
+        avatar,
+        resumeUrl
       });
     } else {
-      // Güncelle
       settings.name = name;
       settings.title = title;
       settings.description = description;
+      settings.bio = bio;
       settings.email = email;
+      settings.phone = phone;
       settings.github = github;
       settings.linkedin = linkedin;
+      settings.avatar = avatar;
+      settings.resumeUrl = resumeUrl;
 
       await settings.save();
     }
 
     return NextResponse.json(settings);
-  } catch (error) {
+  } catch (error: any) {
+    if (error.message === 'Unauthorized' || error.message === 'Forbidden') {
+      return NextResponse.json(
+        { message: 'Yetkiniz yok' },
+        { status: 403 }
+      );
+    }
     return NextResponse.json(
       { message: 'Site bilgileri kaydedilemedi' },
       { status: 500 }
