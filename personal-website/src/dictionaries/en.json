@@ -1,0 +1,15 @@
+{
+  "nav": {
+    "home": "Ana Sayfa",
+    "about": "Hakkımda",
+    "experience": "Deneyimler",
+    "projects": "Projeler",
+    "blog": "Blog",
+    "contact": "İletişim"
+  },
+  "common": {
+    "loading": "Yükleniyor...",
+    "save": "Kaydet",
+    "cancel": "İptal"
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "nav": {
+    "home": "Ana Sayfa",
+    "about": "Hakkımda",
+    "experience": "Deneyimler",
+    "projects": "Projeler",
+    "blog": "Blog",
+    "contact": "İletişim",
+    "admin": "Admin"
+  },
+  "hero": {
+    "greeting": "Merhaba, Ben",
+    "description": "Full Stack Developer"
+  },
+  "about": {
+    "title": "Hakkımda",
+    "skills": "Yetenekler"
+  },
+  "experience": {
+    "title": "Deneyimler",
+    "current": "Devam ediyor"
+  },
+  "projects": {
+    "title": "Projeler",
+    "featured": "Öne Çıkan",
+    "viewDemo": "Demo",
+    "viewCode": "Kod"
+  },
+  "blog": {
+    "title": "Blog",
+    "readMore": "Devamını Oku",
+    "readTime": "dk okuma",
+    "views": "görüntülenme",
+    "allPosts": "Tüm Yazılar",
+    "featured": "Öne Çıkan"
+  },
+  "contact": {
+    "title": "İletişim",
+    "name": "Ad Soyad",
+    "email": "Email",
+    "subject": "Konu",
+    "message": "Mesaj",
+    "send": "Gönder",
+    "sending": "Gönderiliyor...",
+    "success": "Mesajınız başarıyla gönderildi!",
+    "error": "Bir hata oluştu"
+  },
+  "footer": {
+    "rights": "Tüm hakları saklıdır"
+  },
+  "common": {
+    "loading": "Yükleniyor...",
+    "error": "Bir hata oluştu",
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "delete": "Sil",
+    "edit": "Düzenle",
+    "add": "Ekle",
+    "search": "Ara",
+    "filter": "Filtrele",
+    "download": "İndir"
+  }
+}

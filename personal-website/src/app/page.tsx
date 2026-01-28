@@ -15,7 +15,9 @@ import {
   Phone,
   FileText,
   Send,
-  CheckCircle2
+  CheckCircle2,
+  Twitter,
+  Sparkles
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -28,6 +30,7 @@ export default function HomePage() {
   const [experiences, setExperiences] = useState<any[]>([]);
   const [projects, setProjects] = useState<any[]>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -93,6 +96,7 @@ export default function HomePage() {
     e.preventDefault();
     setErrors({});
 
+    // Validation
     if (formData.message.length < 10) {
       setErrors({ message: "Mesaj en az 10 karakter olmalı." });
       return; 
@@ -191,6 +195,11 @@ export default function HomePage() {
       {/* Hero Section */}
       <section id="home" className="min-h-screen flex items-center justify-center relative px-6">
         <div className="text-center max-w-4xl mx-auto relative z-10">
+          <div className="mb-6 inline-flex items-center gap-2 px-4 py-2 bg-cyan-500/10 border border-cyan-500/20 rounded-full text-cyan-400 text-sm">
+            <Sparkles size={16} />
+            <span>Portfolio 2026</span>
+          </div>
+
           <h1 className="text-6xl md:text-7xl font-bold mb-4 bg-linear-to-r from-white via-cyan-200 to-blue-200 bg-clip-text text-transparent">
             {siteData.name}
           </h1>
@@ -217,6 +226,11 @@ export default function HomePage() {
             {siteData.email && (
               <a href={`mailto:${siteData.email}`} className="p-3 bg-white/5 hover:bg-white/10 border border-cyan-500/20 rounded-full transition-all hover:scale-110 hover:border-cyan-500/50">
                 <Mail size={24} />
+              </a>
+            )}
+            {siteData.twitter && (
+              <a href={siteData.twitter} target="_blank" rel="noopener noreferrer" className="p-3 bg-white/5 hover:bg-white/10 border border-cyan-500/20 rounded-full transition-all hover:scale-110 hover:border-cyan-500/50">
+                <Twitter size={24} />
               </a>
             )}
           </div>
@@ -305,7 +319,7 @@ export default function HomePage() {
           </h2>
 
           <div className="space-y-6">
-            {experiences.map((exp: any, i: number) => (
+            {experiences.map((exp: any) => (
               <div key={exp._id} className="bg-white/5 backdrop-blur-sm border border-cyan-500/20 rounded-2xl p-8 hover:border-cyan-500/50 transition-all group">
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-4">
                   <div>
@@ -471,11 +485,10 @@ export default function HomePage() {
                 rows={6}
                 className={`w-full px-4 py-3 bg-white/5 border ${
                   errors.message ? 'border-red-500' : 'border-cyan-500/30'
-                } rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/20 transition resize-none`}
+                } rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition resize-none`}
                 placeholder="Mesajınızı buraya yazın..."
                 required
               />
-              {/* Hata Mesajı Buraya */}
               {errors.message && (
                 <p className="mt-1 text-xs text-red-400 animate-pulse">{errors.message}</p>
               )}

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '@/context/AuthContext';
 import {
   Settings,
   Code,
@@ -17,6 +17,8 @@ import {
   LogOut,
   BarChart3
 } from 'lucide-react';
+
+import chart from '@/components/AnalyticsDashboard/AnalyticsDashboard';
 
 type TabType = 'overview' | 'site' | 'skills' | 'experiences' | 'projects' | 'contacts';
 
@@ -85,7 +87,16 @@ export default function AdminPage() {
   const handleCreate = (type: 'skill' | 'experience' | 'project') => {
     setModalType(type);
     setEditingItem(null);
-    setFormData({});
+    
+    // Set default values based on type
+    if (type === 'skill') {
+      setFormData({ name: '', category: 'other', level: 50, icon: '', order: 0 });
+    } else if (type === 'experience') {
+      setFormData({ title: '', company: '', location: '', startDate: '', endDate: '', current: false, description: '', technologies: [], order: 0 });
+    } else if (type === 'project') {
+      setFormData({ title: '', description: '', longDescription: '', technologies: [], github: '', demo: '', image: '', featured: false, status: 'completed', order: 0 });
+    }
+    
     setShowModal(true);
   };
 
@@ -116,7 +127,8 @@ export default function AdminPage() {
         setShowModal(false);
         fetchAllData();
       } else {
-        alert('Bir hata oluştu');
+        const data = await res.json();
+        alert(data.message || 'Bir hata oluştu');
       }
     } catch (error) {
       alert('İşlem başarısız');
@@ -153,6 +165,7 @@ export default function AdminPage() {
       if (res.ok) {
         alert('Site ayarları güncellendi!');
         fetchAllData();
+        setFormData({});
       }
     } catch (error) {
       alert('Güncelleme başarısız');
@@ -216,13 +229,17 @@ export default function AdminPage() {
           ))}
         </div>
 
+        <div className="space-y-8">
+          <chart></chart>
+        </div>
+
         {/* Overview Tab */}
         {activeTab === 'overview' && (
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             <StatCard title="Yetenekler" value={skills.length} icon={Code} />
             <StatCard title="Deneyimler" value={experiences.length} icon={Briefcase} />
             <StatCard title="Projeler" value={projects.length} icon={FolderKanban} />
-            <StatCard title="Mesajlar" value={contacts.filter(c => c.status === 'new').length} icon={MailIcon} />
+            <StatCard title="Yeni Mesajlar" value={contacts.filter(c => c.status === 'new').length} icon={MailIcon} />
           </div>
         )}
 
@@ -231,12 +248,56 @@ export default function AdminPage() {
           <div className="bg-white/5 backdrop-blur-sm border border-cyan-500/20 rounded-2xl p-8">
             <h2 className="text-2xl font-bold mb-6">Site Ayarları</h2>
             <div className="space-y-4">
-              <InputField label="İsim" value={formData.name || siteData.name} onChange={(v: string) => setFormData({...siteData, ...formData, name: v})} />
-              <InputField label="Başlık" value={formData.title || siteData.title} onChange={(v: string) => setFormData({...siteData, ...formData, title: v})} />
-              <TextAreaField label="Açıklama" value={formData.description || siteData.description} onChange={(v: string) => setFormData({...siteData, ...formData, description: v})} />
-              <InputField label="Email" value={formData.email || siteData.email} onChange={(v: string) => setFormData({...siteData, ...formData, email: v})} />
-              <InputField label="GitHub" value={formData.github || siteData.github} onChange={(v: string) => setFormData({...siteData, ...formData, github: v})} />
-              <InputField label="LinkedIn" value={formData.linkedin || siteData.linkedin} onChange={(v: string) => setFormData({...siteData, ...formData, linkedin: v})} />
+              <InputField 
+                label="İsim" 
+                value={formData.name !== undefined ? formData.name : siteData.name} 
+                onChange={(v: string) => setFormData({...siteData, ...formData, name: v})} 
+              />
+              <InputField 
+                label="Başlık" 
+                value={formData.title !== undefined ? formData.title : siteData.title} 
+                onChange={(v: string) => setFormData({...siteData, ...formData, title: v})} 
+              />
+              <TextAreaField 
+                label="Açıklama" 
+                value={formData.description !== undefined ? formData.description : siteData.description} 
+                onChange={(v: string) => setFormData({...siteData, ...formData, description: v})} 
+              />
+              <TextAreaField 
+                label="Bio (Hakkımda)" 
+                value={formData.bio !== undefined ? formData.bio : siteData.bio} 
+                onChange={(v: string) => setFormData({...siteData, ...formData, bio: v})} 
+              />
+              <InputField 
+                label="Email" 
+                value={formData.email !== undefined ? formData.email : siteData.email} 
+                onChange={(v: string) => setFormData({...siteData, ...formData, email: v})} 
+              />
+              <InputField 
+                label="Telefon" 
+                value={formData.phone !== undefined ? formData.phone : siteData.phone} 
+                onChange={(v: string) => setFormData({...siteData, ...formData, phone: v})} 
+              />
+              <InputField 
+                label="GitHub" 
+                value={formData.github !== undefined ? formData.github : siteData.github} 
+                onChange={(v: string) => setFormData({...siteData, ...formData, github: v})} 
+              />
+              <InputField 
+                label="LinkedIn" 
+                value={formData.linkedin !== undefined ? formData.linkedin : siteData.linkedin} 
+                onChange={(v: string) => setFormData({...siteData, ...formData, linkedin: v})} 
+              />
+              <InputField 
+                label="Twitter" 
+                value={formData.twitter !== undefined ? formData.twitter : siteData.twitter} 
+                onChange={(v: string) => setFormData({...siteData, ...formData, twitter: v})} 
+              />
+              <InputField 
+                label="CV URL" 
+                value={formData.resumeUrl !== undefined ? formData.resumeUrl : siteData.resumeUrl} 
+                onChange={(v: string) => setFormData({...siteData, ...formData, resumeUrl: v})} 
+              />
               
               <button
                 onClick={handleSiteSettingsUpdate}
@@ -290,28 +351,32 @@ export default function AdminPage() {
           <div className="bg-white/5 backdrop-blur-sm border border-cyan-500/20 rounded-2xl p-8">
             <h2 className="text-2xl font-bold mb-6">Mesajlar ({contacts.length})</h2>
             <div className="space-y-4">
-              {contacts.map(contact => (
-                <div key={contact._id} className="bg-white/5 border border-cyan-500/20 rounded-lg p-4">
-                  <div className="flex justify-between items-start mb-2">
-                    <div>
-                      <h3 className="font-bold text-lg">{contact.name}</h3>
-                      <p className="text-gray-400 text-sm">{contact.email}</p>
+              {contacts.length === 0 ? (
+                <p className="text-center text-gray-400 py-8">Henüz mesaj yok</p>
+              ) : (
+                contacts.map(contact => (
+                  <div key={contact._id} className="bg-white/5 border border-cyan-500/20 rounded-lg p-4">
+                    <div className="flex justify-between items-start mb-2">
+                      <div>
+                        <h3 className="font-bold text-lg">{contact.name}</h3>
+                        <p className="text-gray-400 text-sm">{contact.email}</p>
+                      </div>
+                      <span className={`px-3 py-1 rounded-full text-xs ${
+                        contact.status === 'new' ? 'bg-green-500/20 text-green-400' :
+                        contact.status === 'read' ? 'bg-yellow-500/20 text-yellow-400' :
+                        'bg-blue-500/20 text-blue-400'
+                      }`}>
+                        {contact.status}
+                      </span>
                     </div>
-                    <span className={`px-3 py-1 rounded-full text-xs ${
-                      contact.status === 'new' ? 'bg-green-500/20 text-green-400' :
-                      contact.status === 'read' ? 'bg-yellow-500/20 text-yellow-400' :
-                      'bg-blue-500/20 text-blue-400'
-                    }`}>
-                      {contact.status}
-                    </span>
+                    {contact.subject && <p className="text-cyan-400 mb-2">{contact.subject}</p>}
+                    <p className="text-gray-300">{contact.message}</p>
+                    <p className="text-gray-500 text-xs mt-2">
+                      {new Date(contact.createdAt).toLocaleString('tr-TR')}
+                    </p>
                   </div>
-                  {contact.subject && <p className="text-cyan-400 mb-2">{contact.subject}</p>}
-                  <p className="text-gray-300">{contact.message}</p>
-                  <p className="text-gray-500 text-xs mt-2">
-                    {new Date(contact.createdAt).toLocaleString('tr-TR')}
-                  </p>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </div>
         )}
@@ -323,7 +388,11 @@ export default function AdminPage() {
           <div className="bg-slate-800 border border-cyan-500/20 rounded-2xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-bold">
-                {editingItem ? 'Düzenle' : 'Yeni Ekle'} - {modalType}
+                {editingItem ? 'Düzenle' : 'Yeni Ekle'} - {
+                  modalType === 'skill' ? 'Yetenek' : 
+                  modalType === 'experience' ? 'Deneyim' : 
+                  'Proje'
+                }
               </h2>
               <button onClick={() => setShowModal(false)} className="p-2 hover:bg-white/10 rounded-lg">
                 <X size={24} />
@@ -332,8 +401,102 @@ export default function AdminPage() {
 
             {/* Dynamic Form Based on Type */}
             <div className="space-y-4">
-              {/* Add your form fields here based on modalType */}
-              <p className="text-gray-400">Form alanları buraya eklenecek...</p>
+              {modalType === 'skill' && (
+                <>
+                  <InputField label="İsim" value={formData.name || ''} onChange={(v: string) => setFormData({...formData, name: v})} />
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">Kategori</label>
+                    <select
+                      value={formData.category || 'other'}
+                      onChange={(e) => setFormData({...formData, category: e.target.value})}
+                      className="w-full px-4 py-3 bg-white/5 border border-cyan-500/30 rounded-lg text-white focus:outline-none focus:border-cyan-500"
+                    >
+                      <option value="frontend">Frontend</option>
+                      <option value="backend">Backend</option>
+                      <option value="database">Database</option>
+                      <option value="tools">Tools</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">Seviye (0-100)</label>
+                    <input
+                      type="number"
+                      min="0"
+                      max="100"
+                      value={formData.level || 50}
+                      onChange={(e) => setFormData({...formData, level: parseInt(e.target.value)})}
+                      className="w-full px-4 py-3 bg-white/5 border border-cyan-500/30 rounded-lg text-white focus:outline-none focus:border-cyan-500"
+                    />
+                  </div>
+                  <InputField label="İkon (opsiyonel)" value={formData.icon || ''} onChange={(v: string) => setFormData({...formData, icon: v})} />
+                  <InputField label="Sıra" value={formData.order || 0} onChange={(v: string) => setFormData({...formData, order: parseInt(v) || 0})} />
+                </>
+              )}
+
+              {modalType === 'experience' && (
+                <>
+                  <InputField label="Pozisyon" value={formData.title || ''} onChange={(v: string) => setFormData({...formData, title: v})} />
+                  <InputField label="Şirket" value={formData.company || ''} onChange={(v: string) => setFormData({...formData, company: v})} />
+                  <InputField label="Lokasyon" value={formData.location || ''} onChange={(v: string) => setFormData({...formData, location: v})} />
+                  <InputField label="Başlangıç Tarihi" value={formData.startDate || ''} onChange={(v: string) => setFormData({...formData, startDate: v})} />
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      checked={formData.current || false}
+                      onChange={(e) => setFormData({...formData, current: e.target.checked, endDate: e.target.checked ? '' : formData.endDate})}
+                      className="w-4 h-4"
+                    />
+                    <label className="text-sm text-gray-300">Halen devam ediyor</label>
+                  </div>
+                  {!formData.current && (
+                    <InputField label="Bitiş Tarihi" value={formData.endDate || ''} onChange={(v: string) => setFormData({...formData, endDate: v})} />
+                  )}
+                  <TextAreaField label="Açıklama" value={formData.description || ''} onChange={(v: string) => setFormData({...formData, description: v})} />
+                  <InputField 
+                    label="Teknolojiler (virgülle ayırın)" 
+                    value={Array.isArray(formData.technologies) ? formData.technologies.join(', ') : ''} 
+                    onChange={(v: string) => setFormData({...formData, technologies: v.split(',').map((t: string) => t.trim()).filter(Boolean)})} 
+                  />
+                </>
+              )}
+
+              {modalType === 'project' && (
+                <>
+                  <InputField label="Başlık" value={formData.title || ''} onChange={(v: string) => setFormData({...formData, title: v})} />
+                  <TextAreaField label="Kısa Açıklama" value={formData.description || ''} onChange={(v: string) => setFormData({...formData, description: v})} />
+                  <TextAreaField label="Uzun Açıklama" value={formData.longDescription || ''} onChange={(v: string) => setFormData({...formData, longDescription: v})} />
+                  <InputField 
+                    label="Teknolojiler (virgülle ayırın)" 
+                    value={Array.isArray(formData.technologies) ? formData.technologies.join(', ') : ''} 
+                    onChange={(v: string) => setFormData({...formData, technologies: v.split(',').map((t: string) => t.trim()).filter(Boolean)})} 
+                  />
+                  <InputField label="GitHub URL" value={formData.github || ''} onChange={(v: string) => setFormData({...formData, github: v})} />
+                  <InputField label="Demo URL" value={formData.demo || ''} onChange={(v: string) => setFormData({...formData, demo: v})} />
+                  <InputField label="Görsel URL" value={formData.image || ''} onChange={(v: string) => setFormData({...formData, image: v})} />
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      checked={formData.featured || false}
+                      onChange={(e) => setFormData({...formData, featured: e.target.checked})}
+                      className="w-4 h-4"
+                    />
+                    <label className="text-sm text-gray-300">Öne çıkan proje</label>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">Durum</label>
+                    <select
+                      value={formData.status || 'completed'}
+                      onChange={(e) => setFormData({...formData, status: e.target.value})}
+                      className="w-full px-4 py-3 bg-white/5 border border-cyan-500/30 rounded-lg text-white focus:outline-none focus:border-cyan-500"
+                    >
+                      <option value="completed">Tamamlandı</option>
+                      <option value="in-progress">Devam Ediyor</option>
+                      <option value="planned">Planlanıyor</option>
+                    </select>
+                  </div>
+                </>
+              )}
               
               <div className="flex gap-3 mt-6">
                 <button
@@ -413,43 +576,47 @@ function DataTable({ title, data, columns, onAdd, onEdit, onDelete }: any) {
         </button>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead>
-            <tr className="border-b border-cyan-500/20">
-              {columns.map((col: string) => (
-                <th key={col} className="text-left p-3 font-semibold text-cyan-400">
-                  {col}
-                </th>
-              ))}
-              <th className="text-right p-3 font-semibold text-cyan-400">İşlemler</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((item: any) => (
-              <tr key={item._id} className="border-b border-cyan-500/10 hover:bg-white/5">
+      {data.length === 0 ? (
+        <p className="text-center text-gray-400 py-8">Henüz veri yok</p>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-cyan-500/20">
                 {columns.map((col: string) => (
-                  <td key={col} className="p-3">{String(item[col])}</td>
+                  <th key={col} className="text-left p-3 font-semibold text-cyan-400">
+                    {col}
+                  </th>
                 ))}
-                <td className="p-3 text-right">
-                  <button
-                    onClick={() => onEdit(item)}
-                    className="p-2 hover:bg-cyan-500/20 rounded-lg mr-2 transition"
-                  >
-                    <Edit2 size={18} />
-                  </button>
-                  <button
-                    onClick={() => onDelete(item._id)}
-                    className="p-2 hover:bg-red-500/20 rounded-lg transition"
-                  >
-                    <Trash2 size={18} />
-                  </button>
-                </td>
+                <th className="text-right p-3 font-semibold text-cyan-400">İşlemler</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {data.map((item: any) => (
+                <tr key={item._id} className="border-b border-cyan-500/10 hover:bg-white/5">
+                  {columns.map((col: string) => (
+                    <td key={col} className="p-3">{String(item[col])}</td>
+                  ))}
+                  <td className="p-3 text-right">
+                    <button
+                      onClick={() => onEdit(item)}
+                      className="p-2 hover:bg-cyan-500/20 rounded-lg mr-2 transition"
+                    >
+                      <Edit2 size={18} />
+                    </button>
+                    <button
+                      onClick={() => onDelete(item._id)}
+                      className="p-2 hover:bg-red-500/20 rounded-lg transition"
+                    >
+                      <Trash2 size={18} />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }
