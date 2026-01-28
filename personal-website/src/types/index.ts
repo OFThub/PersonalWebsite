@@ -1,38 +1,27 @@
-// ========================
-// TYPE DEFINITIONS
-// ========================
-
-export interface IUser {
-  _id?: string;
-  email: string;
-  password?: string;
-  name: string;
-  role: 'admin' | 'user';
-  createdAt?: Date;
-}
-
-export interface ISiteSettings {
+export interface SiteData {
   _id?: string;
   name: string;
   title: string;
   description: string;
+  bio?: string;
   email?: string;
+  phone?: string;
   github?: string;
   linkedin?: string;
-  bio?: string;
-  avatar?: string;
+  twitter?: string;
+  resumeUrl?: string;
 }
 
-export interface ISkill {
+export interface Skill {
   _id?: string;
   name: string;
-  category: string;
-  level: number; // 1-100
+  category: 'frontend' | 'backend' | 'database' | 'tools' | 'other';
+  level: number;
   icon?: string;
-  order?: number;
+  order: number;
 }
 
-export interface IExperience {
+export interface Experience {
   _id?: string;
   title: string;
   company: string;
@@ -42,10 +31,10 @@ export interface IExperience {
   current: boolean;
   description: string;
   technologies?: string[];
-  order?: number;
+  order: number;
 }
 
-export interface IProject {
+export interface Project {
   _id?: string;
   title: string;
   description: string;
@@ -55,16 +44,32 @@ export interface IProject {
   demo?: string;
   image?: string;
   featured: boolean;
-  order?: number;
   status: 'completed' | 'in-progress' | 'planned';
+  order: number;
 }
 
-export interface IContact {
+export interface Contact {
   _id?: string;
   name: string;
   email: string;
   subject?: string;
   message: string;
   status: 'new' | 'read' | 'replied';
-  createdAt?: Date;
+  createdAt: Date;
+}
+
+export interface User {
+  _id?: string;
+  name: string;
+  email: string;
+  role: 'admin' | 'user';
+}
+
+export interface AnalyticsData {
+  totalViews: number;
+  uniqueViews: number;
+  dailyViews: { _id: string; count: number }[];
+  viewsByType: { _id: string; count: number }[];
+  topPages: { _id: string; count: number }[];
+  topReferrers: { _id: string; count: number }[];
 }
