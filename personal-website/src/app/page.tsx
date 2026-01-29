@@ -8,6 +8,9 @@ import AboutSection from '@/components/Home/About';
 import ExperienceSection from '@/components/Home/Experience';
 import ProjectsSection from '@/components/Home/Projects';
 import ContactSection from '@/components/Home/Contact';
+import GlobalSearch from '@/components/GlobalSearch/GlobalSearch';
+import { ThemeToggle } from '@/components/ThemeProvider/ThemeProvider';
+import { FileText } from 'lucide-react';
 import { SiteData, Skill, Experience, Project } from '@/types';
 
 export default function HomePage() {
@@ -130,12 +133,30 @@ export default function HomePage() {
               ))}
             </div>
 
-            <Link
-              href="/auth/login"
-              className="text-sm px-4 py-2 bg-linear-to-r from-cyan-500 to-blue-600 rounded-lg font-medium hover:shadow-lg hover:shadow-cyan-500/50 transition-all duration-300"
-            >
-              Admin
-            </Link>
+            <div className="flex items-center gap-3">
+              {/* Blog Link */}
+              <Link
+                href="/blog"
+                className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 border border-cyan-500/20 rounded-lg transition-colors"
+              >
+                <FileText size={18} />
+                <span className="hidden md:inline">Blog</span>
+              </Link>
+
+              {/* Global Search */}
+              <GlobalSearch />
+
+              {/* Theme Toggle */}
+              <ThemeToggle />
+
+              {/* Admin Link */}
+              <Link
+                href="/auth/login"
+                className="text-sm px-4 py-2 bg-linear-to-r from-cyan-500 to-blue-600 rounded-lg font-medium hover:shadow-lg hover:shadow-cyan-500/50 transition-all duration-300"
+              >
+                Admin
+              </Link>
+            </div>
           </div>
         </div>
       </nav>

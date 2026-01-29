@@ -12,15 +12,18 @@ import {
   LogOut,
   BarChart3,
   X,
-  Plus
+  Plus,
+  FileText
 } from 'lucide-react';
 import Loading from '@/components/Common/Loading';
 import { InputField, TextAreaField, StatCard } from '@/components/Admin/AdminHelpers';
 import DataTable from '@/components/Admin/DataTable';
 import AnalyticsDashboard from '@/components/AnalyticsDashboard/AnalyticsDashboard';
+import RichTextEditor from '@/components/RichTextEditor/RichTextEditor';
+import ImageUpload from '@/components/ImageUpload/ImageUpload';
 
-type TabType = 'overview' | 'site' | 'skills' | 'experiences' | 'projects' | 'contacts';
-type ModalType = 'skill' | 'experience' | 'project';
+type TabType = 'overview' | 'site' | 'skills' | 'experiences' | 'projects' | 'blog' | 'contacts';
+type ModalType = 'skill' | 'experience' | 'project' | 'blog';
 
 export default function AdminPage() {
   const router = useRouter();
@@ -37,6 +40,7 @@ export default function AdminPage() {
   const [skills, setSkills] = useState<any[]>([]);
   const [experiences, setExperiences] = useState<any[]>([]);
   const [projects, setProjects] = useState<any[]>([]);
+  const [blogPosts, setBlogPosts] = useState<any[]>([]);
   const [contacts, setContacts] = useState<any[]>([]);
 
   // Form ve Düzenleme State'leri
@@ -62,11 +66,12 @@ export default function AdminPage() {
       const token = localStorage.getItem('token');
       const headers = { Authorization: `Bearer ${token}` };
 
-      const [siteRes, skillsRes, expRes, projRes, contactsRes] = await Promise.all([
+      const [siteRes, skillsRes, expRes, projRes, blogRes, contactsRes] = await Promise.all([
         fetch('/api/site'),
         fetch('/api/skills'),
         fetch('/api/experiences'),
         fetch('/api/projects'),
+        fetch('/api/blog', { headers }),
         fetch('/api/contacts', { headers }),
       ]);
 
@@ -74,6 +79,7 @@ export default function AdminPage() {
       if (skillsRes.ok) setSkills(await skillsRes.json());
       if (expRes.ok) setExperiences(await expRes.json());
       if (projRes.ok) setProjects(await projRes.json());
+      if (blogRes.ok) setBlogPosts(await blogRes.json());
       if (contactsRes.ok) setContacts(await contactsRes.json());
     } catch (error) {
       console.error('Veri çekme hatası:', error);
@@ -85,7 +91,24 @@ export default function AdminPage() {
   const openModal = (type: ModalType, item: any = null) => {
     setModalType(type);
     setEditingItem(item);
-    setFormData(item || {});
+    
+    // Blog için varsayılan değerler
+    if (type === 'blog' && !item) {
+      setFormData({
+        title: '',
+        slug: '',
+        excerpt: '',
+        content: '',
+        category: 'technology',
+        tags: [],
+        published: false,
+        featured: false,
+        author: user?.id
+      });
+    } else {
+      setFormData(item || {});
+    }
+    
     setShowModal(true);
   };
 
@@ -94,7 +117,13 @@ export default function AdminPage() {
     try {
       const token = localStorage.getItem('token');
       const method = editingItem ? 'PUT' : 'POST';
-      const endpoint = `/api/${modalType}s${editingItem ? `/${editingItem._id}` : ''}`;
+      
+      let endpoint = '';
+      if (modalType === 'blog') {
+        endpoint = editingItem ? `/api/blog/${editingItem.slug}` : '/api/blog';
+      } else {
+        endpoint = `/api/${modalType}s${editingItem ? `/${editingItem._id}` : ''}`;
+      }
 
       const res = await fetch(endpoint, {
         method,
@@ -110,7 +139,8 @@ export default function AdminPage() {
         fetchAllData();
         setFormData({});
       } else {
-        alert('Kaydetme sırasında bir hata oluştu.');
+        const error = await res.json();
+        alert(error.message || 'Kaydetme sırasında bir hata oluştu.');
       }
     } catch (error) {
       alert('İşlem başarısız.');
@@ -123,10 +153,13 @@ export default function AdminPage() {
     if (!confirm('Bu öğeyi silmek istediğinize emin misiniz?')) return;
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`/api/${type}s/${id}`, {
+      const endpoint = type === 'blog' ? `/api/blog/${id}` : `/api/${type}s/${id}`;
+      
+      const res = await fetch(endpoint, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       });
+      
       if (res.ok) fetchAllData();
     } catch (error) {
       alert('Silme başarısız.');
@@ -163,6 +196,20 @@ export default function AdminPage() {
     }
   };
 
+  // Slug oluşturma
+  const generateSlug = (title: string) => {
+    return title
+      .toLowerCase()
+      .replace(/ğ/g, 'g')
+      .replace(/ü/g, 'u')
+      .replace(/ş/g, 's')
+      .replace(/ı/g, 'i')
+      .replace(/ö/g, 'o')
+      .replace(/ç/g, 'c')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  };
+
   if (authLoading || !user) return <Loading />;
 
   return (
@@ -191,6 +238,7 @@ export default function AdminPage() {
             { id: 'skills', label: 'Yetenekler', icon: Code },
             { id: 'experiences', label: 'Deneyimler', icon: Briefcase },
             { id: 'projects', label: 'Projeler', icon: FolderKanban },
+            { id: 'blog', label: 'Blog', icon: FileText },
             { id: 'contacts', label: 'Mesajlar', icon: MailIcon },
           ].map((tab) => (
             <button
@@ -207,21 +255,16 @@ export default function AdminPage() {
           ))}
         </div>
 
-          {/* Dynamic Content */}
-          <div className="space-y-6">
-            {/* Overview Tab */}
-
+        {/* Dynamic Content */}
+        <div className="space-y-6">
+          {/* Overview Tab */}
           {activeTab === 'overview' && (
             <div className="space-y-6">
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <StatCard title="Yetenekler" value={skills.length} icon={Code} />
                 <StatCard title="Deneyimler" value={experiences.length} icon={Briefcase} />
                 <StatCard title="Projeler" value={projects.length} icon={FolderKanban} />
-                <StatCard
-                  title="Yeni Mesajlar"
-                  value={contacts.filter((c) => c.status === 'new').length}
-                  icon={MailIcon}
-                />
+                <StatCard title="Blog Yazıları" value={blogPosts.length} icon={FileText} />
               </div>
               <AnalyticsDashboard />
             </div>
@@ -280,8 +323,8 @@ export default function AdminPage() {
               data={skills} 
               columns={['name', 'category', 'level']} 
               onAdd={() => openModal('skill')}
-              onEdit={(item: any) => openModal('skill', item)} // : any eklendi
-              onDelete={(item: any) => handleDelete('skill', item._id)} // : any eklendi
+              onEdit={(item: any) => openModal('skill', item)}
+              onDelete={(item: any) => handleDelete('skill', item._id)}
             />
           )}
 
@@ -306,6 +349,18 @@ export default function AdminPage() {
               onAdd={() => openModal('project')}
               onEdit={(item: any) => openModal('project', item)}
               onDelete={(item: any) => handleDelete('project', item._id)}
+            />
+          )}
+
+          {/* Blog Tab */}
+          {activeTab === 'blog' && (
+            <DataTable 
+              title="Blog Yazıları" 
+              data={blogPosts} 
+              columns={['title', 'category', 'published', 'views']} 
+              onAdd={() => openModal('blog')}
+              onEdit={(item: any) => openModal('blog', item)}
+              onDelete={(item: any) => handleDelete('blog', item.slug)}
             />
           )}
 
@@ -353,7 +408,7 @@ export default function AdminPage() {
       {/* MODAL COMPONENT */}
       {showModal && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-slate-900 border border-white/10 rounded-2xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+          <div className="bg-slate-900 border border-white/10 rounded-2xl p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-bold text-cyan-400">
                 {editingItem ? 'Düzenle' : 'Yeni Ekle'} - {modalType.toUpperCase()}
@@ -405,7 +460,94 @@ export default function AdminPage() {
                   <InputField label="Başlık" value={formData.title || ''} onChange={(v: string) => setFormData({...formData, title: v})} />
                   <TextAreaField label="Açıklama" value={formData.description || ''} onChange={(v: string) => setFormData({...formData, description: v})} />
                   <InputField label="GitHub URL" value={formData.github || ''} onChange={(v: string) => setFormData({...formData, github: v})} />
-                  <InputField label="Görsel URL" value={formData.image || ''} onChange={(v: string) => setFormData({...formData, image: v})} />
+                  <ImageUpload
+                    label="Proje Görseli"
+                    value={formData.image}
+                    onChange={(url: string) => setFormData({...formData, image: url})}
+                    folder="projects"
+                  />
+                </>
+              )}
+
+              {/* BLOG FORM */}
+              {modalType === 'blog' && (
+                <>
+                  <InputField 
+                    label="Başlık" 
+                    value={formData.title || ''} 
+                    onChange={(v: string) => {
+                      setFormData({...formData, title: v, slug: generateSlug(v)});
+                    }} 
+                  />
+                  <InputField 
+                    label="Slug (URL)" 
+                    value={formData.slug || ''} 
+                    onChange={(v: string) => setFormData({...formData, slug: v})} 
+                  />
+                  <TextAreaField 
+                    label="Özet" 
+                    value={formData.excerpt || ''} 
+                    onChange={(v: string) => setFormData({...formData, excerpt: v})} 
+                  />
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-400 mb-2">İçerik</label>
+                    <RichTextEditor
+                      content={formData.content || ''}
+                      onChange={(html: string) => setFormData({...formData, content: html})}
+                    />
+                  </div>
+
+                  <ImageUpload
+                    label="Kapak Görseli"
+                    value={formData.coverImage}
+                    onChange={(url: string) => setFormData({...formData, coverImage: url})}
+                    folder="blog"
+                  />
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-400 mb-2">Kategori</label>
+                    <select
+                      value={formData.category || 'technology'}
+                      onChange={(e) => setFormData({...formData, category: e.target.value})}
+                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white focus:border-cyan-500 outline-none"
+                    >
+                      <option value="technology">Technology</option>
+                      <option value="programming">Programming</option>
+                      <option value="tutorial">Tutorial</option>
+                      <option value="career">Career</option>
+                      <option value="personal">Personal</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+
+                  <InputField 
+                    label="Etiketler (virgülle ayırın)" 
+                    value={formData.tags?.join(', ') || ''} 
+                    onChange={(v: string) => setFormData({...formData, tags: v.split(',').map((t: string) => t.trim())})} 
+                  />
+
+                  <div className="flex items-center gap-4">
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={formData.published || false}
+                        onChange={(e) => setFormData({...formData, published: e.target.checked})}
+                        className="w-5 h-5 rounded border-cyan-500/30 bg-white/5 text-cyan-500 focus:ring-cyan-500"
+                      />
+                      <span className="text-sm">Yayınla</span>
+                    </label>
+
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={formData.featured || false}
+                        onChange={(e) => setFormData({...formData, featured: e.target.checked})}
+                        className="w-5 h-5 rounded border-cyan-500/30 bg-white/5 text-cyan-500 focus:ring-cyan-500"
+                      />
+                      <span className="text-sm">Öne Çıkar</span>
+                    </label>
+                  </div>
                 </>
               )}
               

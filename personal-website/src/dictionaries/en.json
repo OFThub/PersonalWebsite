@@ -1,15 +1,123 @@
 {
   "nav": {
-    "home": "Ana Sayfa",
-    "about": "Hakkımda",
-    "experience": "Deneyimler",
-    "projects": "Projeler",
+    "home": "Home",
+    "about": "About",
+    "experience": "Experience",
+    "projects": "Projects",
     "blog": "Blog",
-    "contact": "İletişim"
+    "contact": "Contact",
+    "admin": "Admin"
+  },
+  "hero": {
+    "portfolio": "Portfolio 2026",
+    "download_cv": "Download CV"
+  },
+  "about": {
+    "title": "About Me",
+    "skills": "Skills"
+  },
+  "experience": {
+    "title": "Experience",
+    "current": "Current"
+  },
+  "projects": {
+    "title": "Projects",
+    "featured": "Featured",
+    "status": {
+      "completed": "Completed",
+      "in-progress": "In Progress",
+      "planned": "Planned"
+    }
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Articles about technology, software development and personal experiences",
+    "search_placeholder": "Search in blog posts...",
+    "all": "All",
+    "featured": "Featured",
+    "all_posts": "All Posts",
+    "search_results": "Search Results",
+    "no_results": "No posts found",
+    "read_more": "Read More",
+    "min_read": "min read",
+    "views": "views",
+    "related_posts": "Related Posts",
+    "share": "Share",
+    "popular_tags": "Popular Tags"
+  },
+  "contact": {
+    "title": "Contact",
+    "name": "Full Name",
+    "email": "Email",
+    "subject": "Subject",
+    "message": "Message",
+    "send": "Send",
+    "sending": "Sending...",
+    "success": "Your message has been sent successfully!",
+    "error": "An error occurred",
+    "name_placeholder": "Your Name",
+    "email_placeholder": "email@example.com",
+    "subject_placeholder": "Message subject",
+    "message_placeholder": "Write your message here...",
+    "message_min_length": "Message must be at least 10 characters."
+  },
+  "footer": {
+    "copyright": "All rights reserved."
+  },
+  "search": {
+    "placeholder": "Search...",
+    "shortcut": "⌘K",
+    "start_typing": "Start typing to search",
+    "no_results": "No results found",
+    "navigate": "Navigate with ↑↓, select with Enter",
+    "close": "Close with ESC"
+  },
+  "admin": {
+    "welcome": "Welcome",
+    "logout": "Logout",
+    "overview": "Overview",
+    "site_settings": "Site Settings",
+    "skills": "Skills",
+    "experiences": "Experiences",
+    "projects": "Projects",
+    "blog": "Blog",
+    "contacts": "Messages",
+    "save": "Save",
+    "saving": "Saving...",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "add_new": "Add New",
+    "confirm_delete": "Are you sure you want to delete this item?",
+    "no_data": "No data yet",
+    "stats": {
+      "skills": "Skills",
+      "experiences": "Experiences",
+      "projects": "Projects",
+      "blog_posts": "Blog Posts",
+      "new_messages": "New Messages"
+    }
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "email": "Email",
+    "password": "Password",
+    "password_confirm": "Confirm Password",
+    "name": "Full Name",
+    "login_title": "Welcome Back",
+    "login_subtitle": "Sign in to your account",
+    "register_title": "Sign Up",
+    "register_subtitle": "Create a new account",
+    "no_account": "Don't have an account?",
+    "have_account": "Already have an account?",
+    "back_to_home": "Back to Home",
+    "logging_in": "Logging in...",
+    "registering": "Registering..."
   },
   "common": {
-    "loading": "Yükleniyor...",
-    "save": "Kaydet",
-    "cancel": "İptal"
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success"
   }
 }

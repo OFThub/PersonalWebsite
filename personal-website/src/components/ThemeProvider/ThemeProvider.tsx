@@ -1,7 +1,8 @@
 'use client';
 
-import { ThemeProvider as NextThemesProvider } from 'next-themes';
-import { ReactNode } from 'react';
+import React, { useEffect, useState, ReactNode } from 'react';
+import { ThemeProvider as NextThemesProvider, useTheme } from 'next-themes';
+import { Sun, Moon } from 'lucide-react';
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   return (
@@ -10,13 +11,6 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     </NextThemesProvider>
   );
 }
-
-// components/ThemeToggle.tsx
-'use client';
-
-import { useTheme } from 'next-themes';
-import { Sun, Moon } from 'lucide-react';
-import { useEffect, useState } from 'react';
 
 export function ThemeToggle() {
   const [mounted, setMounted] = useState(false);
@@ -27,7 +21,7 @@ export function ThemeToggle() {
   }, []);
 
   if (!mounted) {
-    return null;
+    return <div className="p-2 w-9 h-9" />;
   }
 
   return (

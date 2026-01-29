@@ -13,7 +13,7 @@ export default function ExperienceSection({ experiences }: ExperienceSectionProp
       <div className="max-w-6xl mx-auto">
         <h2 className="text-5xl font-bold mb-12 flex items-center gap-3">
           <Briefcase className="text-cyan-400" />
-          <span className="bg-gradient-to-r from-white to-cyan-200 bg-clip-text text-transparent">
+          <span className="bg-linear-to-r from-white to-cyan-200 bg-clip-text text-transparent">
             Deneyimler
           </span>
         </h2>

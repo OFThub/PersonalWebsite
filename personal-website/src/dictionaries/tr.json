@@ -9,8 +9,8 @@
     "admin": "Admin"
   },
   "hero": {
-    "greeting": "Merhaba, Ben",
-    "description": "Full Stack Developer"
+    "portfolio": "Portfolio 2026",
+    "download_cv": "CV İndir"
   },
   "about": {
     "title": "Hakkımda",
@@ -23,16 +23,27 @@
   "projects": {
     "title": "Projeler",
     "featured": "Öne Çıkan",
-    "viewDemo": "Demo",
-    "viewCode": "Kod"
+    "status": {
+      "completed": "Tamamlandı",
+      "in-progress": "Devam Ediyor",
+      "planned": "Planlanıyor"
+    }
   },
   "blog": {
     "title": "Blog",
-    "readMore": "Devamını Oku",
-    "readTime": "dk okuma",
+    "subtitle": "Teknoloji, yazılım geliştirme ve kişisel deneyimler hakkında yazılar",
+    "search_placeholder": "Blog yazılarında ara...",
+    "all": "Tümü",
+    "featured": "Öne Çıkanlar",
+    "all_posts": "Tüm Yazılar",
+    "search_results": "Arama Sonuçları",
+    "no_results": "Yazı bulunamadı",
+    "read_more": "Devamını Oku",
+    "min_read": "dk okuma",
     "views": "görüntülenme",
-    "allPosts": "Tüm Yazılar",
-    "featured": "Öne Çıkan"
+    "related_posts": "İlgili Yazılar",
+    "share": "Paylaş",
+    "popular_tags": "Popüler Etiketler"
   },
   "contact": {
     "title": "İletişim",
@@ -43,21 +54,70 @@
     "send": "Gönder",
     "sending": "Gönderiliyor...",
     "success": "Mesajınız başarıyla gönderildi!",
-    "error": "Bir hata oluştu"
+    "error": "Bir hata oluştu",
+    "name_placeholder": "Adınız Soyadınız",
+    "email_placeholder": "email@ornek.com",
+    "subject_placeholder": "Mesaj konusu",
+    "message_placeholder": "Mesajınızı buraya yazın...",
+    "message_min_length": "Mesaj en az 10 karakter olmalı."
   },
   "footer": {
-    "rights": "Tüm hakları saklıdır"
+    "copyright": "Tüm hakları saklıdır."
+  },
+  "search": {
+    "placeholder": "Ara...",
+    "shortcut": "⌘K",
+    "start_typing": "Arama yapmak için yazmaya başlayın",
+    "no_results": "Sonuç bulunamadı",
+    "navigate": "↑↓ ile gezin, Enter ile seç",
+    "close": "ESC ile kapat"
+  },
+  "admin": {
+    "welcome": "Hoş geldin",
+    "logout": "Çıkış",
+    "overview": "Genel Bakış",
+    "site_settings": "Site Ayarları",
+    "skills": "Yetenekler",
+    "experiences": "Deneyimler",
+    "projects": "Projeler",
+    "blog": "Blog",
+    "contacts": "Mesajlar",
+    "save": "Kaydet",
+    "saving": "Kaydediliyor...",
+    "cancel": "İptal",
+    "edit": "Düzenle",
+    "delete": "Sil",
+    "add_new": "Yeni Ekle",
+    "confirm_delete": "Bu öğeyi silmek istediğinize emin misiniz?",
+    "no_data": "Henüz veri yok",
+    "stats": {
+      "skills": "Yetenekler",
+      "experiences": "Deneyimler",
+      "projects": "Projeler",
+      "blog_posts": "Blog Yazıları",
+      "new_messages": "Yeni Mesajlar"
+    }
+  },
+  "auth": {
+    "login": "Giriş Yap",
+    "register": "Kayıt Ol",
+    "email": "Email",
+    "password": "Şifre",
+    "password_confirm": "Şifre Tekrar",
+    "name": "Ad Soyad",
+    "login_title": "Hoş Geldiniz",
+    "login_subtitle": "Hesabınıza giriş yapın",
+    "register_title": "Kayıt Ol",
+    "register_subtitle": "Yeni hesap oluşturun",
+    "no_account": "Hesabınız yok mu?",
+    "have_account": "Zaten hesabınız var mı?",
+    "back_to_home": "Ana Sayfaya Dön",
+    "logging_in": "Giriş yapılıyor...",
+    "registering": "Kaydediliyor..."
   },
   "common": {
     "loading": "Yükleniyor...",
-    "error": "Bir hata oluştu",
-    "save": "Kaydet",
-    "cancel": "İptal",
-    "delete": "Sil",
-    "edit": "Düzenle",
-    "add": "Ekle",
-    "search": "Ara",
-    "filter": "Filtrele",
-    "download": "İndir"
+    "error": "Hata",
+    "success": "Başarılı"
   }
 }
