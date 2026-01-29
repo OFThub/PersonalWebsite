@@ -71,11 +71,11 @@ export default function BlogPage() {
   if (loading) return <Loading />;
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-slate-900 via-blue-900 to-slate-900 text-white">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 text-white">
       {/* Header */}
       <div className="bg-slate-900/50 backdrop-blur-lg border-b border-cyan-500/20 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-6 py-4">
-          <Link href="/" className="text-2xl font-bold bg-linear-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+          <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
             Portfolio
           </Link>
         </div>
@@ -84,7 +84,7 @@ export default function BlogPage() {
       <div className="max-w-7xl mx-auto px-6 py-12">
         {/* Hero Section */}
         <div className="text-center mb-12">
-          <h1 className="text-5xl md:text-6xl font-bold mb-4 bg-linear-to-r from-white to-cyan-200 bg-clip-text text-transparent">
+          <h1 className="text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-white to-cyan-200 bg-clip-text text-transparent">
             Blog
           </h1>
           <p className="text-xl text-gray-400 max-w-2xl mx-auto">
@@ -114,7 +114,7 @@ export default function BlogPage() {
                 onClick={() => setSelectedCategory(cat)}
                 className={`px-4 py-2 rounded-lg whitespace-nowrap transition ${
                   selectedCategory === cat
-                    ? 'bg-linear-to-r from-cyan-500 to-blue-600 text-white'
+                    ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white'
                     : 'bg-white/5 hover:bg-white/10 border border-cyan-500/20'
                 }`}
               >
@@ -192,9 +192,9 @@ function FeaturedPostCard({ post }: { post: BlogPost }) {
               alt={post.title}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             />
-            <div className="absolute inset-0 bg-linear-to-t from-slate-900 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent" />
             <div className="absolute top-4 right-4">
-              <span className="px-3 py-1 bg-linear-to-r from-cyan-500 to-blue-600 text-white text-xs font-bold rounded-full">
+              <span className="px-3 py-1 bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-xs font-bold rounded-full">
                 Featured
               </span>
             </div>

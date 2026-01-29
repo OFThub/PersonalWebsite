@@ -9,7 +9,7 @@ import ExperienceSection from '@/components/Home/Experience';
 import ProjectsSection from '@/components/Home/Projects';
 import ContactSection from '@/components/Home/Contact';
 import GlobalSearch from '@/components/GlobalSearch/GlobalSearch';
-import { ThemeToggle } from '@/components/ThemeProvider/ThemeProvider';
+import { ThemeToggle } from '@/components/ThemeToggle/ThemeToggle';
 import { FileText } from 'lucide-react';
 import { SiteData, Skill, Experience, Project } from '@/types';
 

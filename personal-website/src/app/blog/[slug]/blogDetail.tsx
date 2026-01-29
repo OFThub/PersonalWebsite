@@ -80,7 +80,7 @@ export default function BlogDetailPage() {
   if (!post) return null;
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-slate-900 via-blue-900 to-slate-900 text-white">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 text-white">
       {/* Header */}
       <div className="bg-slate-900/50 backdrop-blur-lg border-b border-cyan-500/20 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -107,7 +107,7 @@ export default function BlogDetailPage() {
               alt={post.title}
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-linear-to-t from-slate-900 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent" />
           </div>
         )}
 
@@ -135,7 +135,7 @@ export default function BlogDetailPage() {
         </div>
 
         {/* Title */}
-        <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-linear-to-r from-white to-cyan-200 bg-clip-text text-transparent">
+        <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-white to-cyan-200 bg-clip-text text-transparent">
           {post.title}
         </h1>
 
@@ -146,7 +146,7 @@ export default function BlogDetailPage() {
 
         {/* Author Info */}
         <div className="flex items-center gap-4 mb-8 pb-8 border-b border-cyan-500/20">
-          <div className="w-12 h-12 bg-linear-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
+          <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
             {post.author.name.charAt(0).toUpperCase()}
           </div>
           <div>
